@@ -41,6 +41,7 @@ def processImage(file, outputPath=None):
     
     return {
       'filename': '.'.join([fileID, OUTPUT_EXTENSION]),
+      'folder': outputPath,
       'variations': list(map(lambda vairation: vairation['name'], OUTPUT_SIZES))
     }
 
