@@ -35,7 +35,10 @@ def processImage(file, outputPath=None):
         filename = generateFilename(fileID, size['name'], outputPath)
         temp.save(filename)
     
-    return '.'.join([fileID, OUTPUT_EXTENSION])
+    return {
+      'filename': '.'.join([fileID, OUTPUT_EXTENSION]),
+      'variations': list(map(lambda vairation: vairation['name'], OUTPUT_SIZES))
+    }
 
 def generateFilename(fileID, modifier, outputPath):
     filename = "{}_{}.{}".format(fileID, modifier, OUTPUT_EXTENSION)
