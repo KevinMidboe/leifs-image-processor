@@ -19,7 +19,11 @@ OUTPUT_SIZES = [
 
 
 def processImage(file, outputPath=None):
-    outputPath = args.output if 'args.output' in globals() else os.path.join(OUTPUT_FALLBACK, 'output')
+    if outputPath == None:
+      outputPath = args.output if 'args.output' in globals() else os.path.join(OUTPUT_FALLBACK, 'output')
+    else:
+      outputPath = os.path.join(OUTPUT_FALLBACK, outputPath)
+
     print('outputpath', outputPath)
     image = Image.open(file)
     fileID = uuid.uuid4().hex
