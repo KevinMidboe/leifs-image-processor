@@ -50,7 +50,7 @@ def upload(id):
     print('processing file: ', filename)
 
     ext = os.path.splitext(filename)[1][1:].strip().lower()
-    if ext in set(['jpg', 'jpfg', 'png']):
+    if ext in set(['jpg', 'jpeg', 'png']):
       print('File supported moving on.')
     else:
       raise InvalidFiletype('Unsupported file type {}'.format(ext), status_code=415)
