@@ -6,7 +6,7 @@ from processor import processImage
 
 app = Flask(__name__)
 CORS_ORIGIN = 'http://localhost:8080'
-OUTPUT_PATH = 'output'
+OUTPUT_PATH = 'assets'
 
 class InvalidFiletype(Exception):
   status_code = 400
