@@ -5,7 +5,8 @@ import os
 from processor import processImage
 
 app = Flask(__name__)
-OUTPUT_PATH = 'thumbnails/'
+CORS_ORIGIN = 'http://localhost:8080'
+OUTPUT_PATH = 'output'
 
 class InvalidFiletype(Exception):
   status_code = 400
@@ -28,8 +29,19 @@ def handle_invalid_filetype(error):
   response.status_code = error.status_code
   return response
 
-@app.route("/upload", methods=["POST"])
-def upload():
+
+@app.route('/api/upload', methods=['OPTIONS'])
+def upload_options():
+    print('setting up response for options')
+    resp = jsonify({'foo': 'bar baz'})
+    resp.headers.add('Access-Control-Allow-Origin', CORS_ORIGIN)
+    resp.headers.add('Access-Control-Allow-Methods', 'POST,OPTIONS')
+    resp.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    resp.status_code = 200
+    return resp
+
+@app.route("/api/upload/<int:id>", methods=["POST"])
+def upload(id):
   print('Received uploads')
   outputs = []
 
@@ -44,10 +56,11 @@ def upload():
       raise InvalidFiletype('Unsupported file type {}'.format(ext), status_code=415)
 
     imageInBytes = BytesIO(upload.read())
-    outputFilename = processImage(imageInBytes, OUTPUT_PATH)
-    outputs.append(outputFilename)
+    outputImageProcessing = processImage(imageInBytes, OUTPUT_PATH)
+    outputs.append(outputImageProcessing)
 
-  response = jsonify({ 'filenames': outputs })
+  response = jsonify({ 'uploaded': outputs })
+  response.headers.add('Access-Control-Allow-Origin', CORS_ORIGIN)
   response.status_code = 200
 
   # print(uploaded_files)
