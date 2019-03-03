@@ -14,8 +14,7 @@ OUTPUT_SIZES = [
     { 'dimensions': (250, 250), 'name': 'thumb', 'crop': True },
     { 'dimensions': (650, 650), 'name': 'sm', 'crop': False },
     { 'dimensions': (1200, 1200), 'name': 'md', 'crop': False },
-    { 'dimensions': (1800, 1800), 'name': 'lg', 'crop': False },
-    { 'dimensions': (3000, 3000), 'name': '', 'crop': False }]
+    { 'dimensions': (2500, 2500), 'name': 'lg', 'crop': False }]
 
 
 
