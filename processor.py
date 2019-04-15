@@ -26,6 +26,7 @@ def processImage(file, outputPath=None):
 
     print('outputpath', outputPath)
     image = Image.open(file)
+    image = rotateFromExifMetadata(image)
     fileID = uuid.uuid4().hex
 
     for size in OUTPUT_SIZES:
@@ -44,6 +45,21 @@ def processImage(file, outputPath=None):
       'folder': outputPath,
       'variations': list(map(lambda vairation: vairation['name'], OUTPUT_SIZES))
     }
+
+def rotateFromExifMetadata(image):
+  for orientation in ExifTags.TAGS.keys():
+        if ExifTags.TAGS[orientation]=='Orientation':
+            break
+    exif=dict(image._getexif().items())
+
+    if exif[orientation] == 3:
+        image=image.rotate(180, expand=True)
+    elif exif[orientation] == 6:
+        image=image.rotate(270, expand=True)
+    elif exif[orientation] == 8:
+        image=image.rotate(90, expand=True)
+
+    return image
 
 def generateFilename(fileID, modifier, outputPath):
     filename = "{}_{}.{}".format(fileID, modifier, OUTPUT_EXTENSION)
