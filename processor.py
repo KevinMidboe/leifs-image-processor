@@ -52,7 +52,7 @@ def rotateFromExifMetadata(image):
     exif = image._getexif()
   except AttributeError as e:
     print("Could not get exif - Bad image!")
-    return False
+    return image
 
   (width, height) = image.size
   if not exif:
@@ -71,9 +71,6 @@ def rotateFromExifMetadata(image):
       if orientation in rotate_values:
         # Rotate and return the picture
         return image.rotate(rotate_values[orientation])
-      else:
-        if width > height:
-          return image.rotate(90)
 
   return image
 
