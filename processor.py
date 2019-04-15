@@ -1,6 +1,6 @@
 import glob
 import os
-from PIL import Image
+from PIL import Image, ExifTags
 import concurrent.futures
 import argparse
 import fileinput
@@ -47,24 +47,35 @@ def processImage(file, outputPath=None):
     }
 
 def rotateFromExifMetadata(image):
+  """ This function autorotates a picture """
   try:
-    for orientation in ExifTags.TAGS.keys():
-      if ExifTags.TAGS[orientation]=='Orientation':
-        break
-      exif=dict(image._getexif().items())
+    exif = image._getexif()
+  except AttributeError as e:
+    print("Could not get exif - Bad image!")
+    return False
 
-      if exif[orientation] == 3:
-        image=image.rotate(180, expand=True)
-      elif exif[orientation] == 6:
-        image=image.rotate(270, expand=True)
-      elif exif[orientation] == 8:
-        image=image.rotate(90, expand=True)
+  (width, height) = image.size
+  if not exif:
+    if width > height:
+      return image.rotate(90)
+  else:
+    orientation_key = 274 # cf ExifTags
+    if orientation_key in exif:
+      orientation = exif[orientation_key]
+      rotate_values = {
+        3: 180,
+        6: 270,
+        8: 90
+      }
+      
+      if orientation in rotate_values:
+        # Rotate and return the picture
+        return image.rotate(rotate_values[orientation])
+      else:
+        if width > height:
+          return image.rotate(90)
 
-      return image
-  except (AttributeError, KeyError, IndexError):
-    # cases: image don't have getexif
-    print('unable to find orientation exif metadata')
-    pass
+  return image
 
 def generateFilename(fileID, modifier, outputPath):
     filename = "{}_{}.{}".format(fileID, modifier, OUTPUT_EXTENSION)
