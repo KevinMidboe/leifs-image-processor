@@ -11,7 +11,7 @@ IMAGE_TYPES = ['.png', '.jpg', '.jpeg', '.JPG', '.PNG']
 OUTPUT_EXTENSION = 'jpg'
 OUTPUT_FALLBACK = os.path.dirname(__file__)
 OUTPUT_SIZES = [
-    { 'dimensions': (300, 300), 'name': 'thumb', 'crop': True },
+    { 'dimensions': (400, 400), 'name': 'thumb', 'crop': True },
     { 'dimensions': (650, 650), 'name': 'sm', 'crop': False },
     { 'dimensions': (1200, 1200), 'name': 'md', 'crop': False },
     { 'dimensions': (2500, 2500), 'name': 'lg', 'crop': False }]
