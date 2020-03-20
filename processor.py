@@ -38,6 +38,7 @@ def processImage(file, outputPath=None):
         temp.thumbnail(size['dimensions'], Image.LANCZOS)
         
         filename = generateFilename(fileID, size['name'], outputPath)
+        temp = temp.convert("RGB")
         temp.save(filename)
     
     return {
